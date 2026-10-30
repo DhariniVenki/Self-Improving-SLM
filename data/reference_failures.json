@@ -1,0 +1,14 @@
+{
+ "123": {
+  "status": "timeout",
+  "error": null
+ },
+ "180": {
+  "status": "wrong_answer",
+  "error": "AssertionError: "
+ },
+ "493": {
+  "status": "wrong_answer",
+  "error": "AssertionError: "
+ }
+}

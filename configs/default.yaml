@@ -1,0 +1,34 @@
+# Shared settings for every run. Change values here, not inside scripts,
+# so all four runs (A, B, C, D) use the same protocol.
+
+model: Qwen/Qwen2.5-Coder-0.5B-Instruct
+seed: 0
+
+data:
+  dataset: google-research-datasets/mbpp
+  config: full              # 374 train, 90 validation, 500 test, 10 prompt
+  heldout_size: 60          # taken from train+validation, used for tuning only
+  splits_file: data/splits.json
+
+prompt:
+  # The model sees this many tests in the prompt; the sandbox checks all 3.
+  n_shown_tests: 1
+
+generation:
+  backend: auto             # auto | vllm | hf
+  max_new_tokens: 512
+  batch_size: 32            # hf backend only
+  eval:                     # greedy decoding for every evaluation
+    temperature: 0.0
+  sample:                   # sampling for self-training data (later tasks)
+    n: 8
+    temperature: 0.8
+    top_p: 0.95
+
+sandbox:
+  timeout_s: 5              # CPU seconds per program (wall-clock backstop is 3x + 2s)
+  memory_mb: 1024
+  workers: 0                # 0 = one per CPU
+
+# Point this at Google Drive in Colab, e.g. /content/drive/MyDrive/self-improving-slm
+output_dir: outputs
