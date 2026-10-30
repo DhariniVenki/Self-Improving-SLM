@@ -92,6 +92,15 @@ test later). `--output-dir` writes somewhere else instead, such as Drive.
   test doesn't reveal.
 - **Reference solutions:** 961/964 pass their own tests. The failures are
   listed in `data/reference_failures.json`; drop them from Run D's data.
+- **Setup code is shown in the prompt** (prompt version 2). Three problems
+  (367 in test, 596 and 927 in train) build test inputs in setup code,
+  e.g. a tree made of `Node` objects; without seeing it the model can't
+  know the interface. Results store `prompt_version` and older ones are redone.
+- **Greedy decoding on vLLM is not perfectly repeatable.** Two identical
+  greedy runs on the test set gave the same completion for 382/500
+  problems and flipped pass/fail on 9 (1.8%). Treat differences under about
+  2 points between runs as noise, use McNemar's test on per-problem
+  results, and for final numbers average a few repeated evaluations.
 - **Published scores:** the Qwen2.5-Coder report gives 52.4% on MBPP for
   this model, measured with EvalPlus on cleaned-up problems. Our protocol
   is stricter (original problems and tests, one test shown).

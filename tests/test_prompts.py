@@ -14,6 +14,11 @@ class PromptTest(unittest.TestCase):
         self.assertIn("assert add(1, 2) == 3", user)
         self.assertNotIn("assert add(0, 0) == 0", user)
 
+    def test_setup_code_shown_only_when_present(self):
+        self.assertNotIn("setup code", build_messages(PROBLEM)[1]["content"])
+        user = build_messages({**PROBLEM, "test_setup_code": "root = Node(1)"})[1]["content"]
+        self.assertIn("root = Node(1)", user)
+
     def test_extract_fenced(self):
         out = "Here you go:\n```python\ndef add(a, b):\n    return a + b\n```\nDone."
         self.assertEqual(extract_code(out), "def add(a, b):\n    return a + b")

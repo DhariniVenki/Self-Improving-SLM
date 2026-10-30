@@ -25,6 +25,7 @@ from slm.config import load_config  # noqa: E402
 from slm.data import get_split, load_mbpp, load_splits, split_hash  # noqa: E402
 from slm.evaluate import evaluate, print_summary, save  # noqa: E402
 from slm.generate import Generator  # noqa: E402
+from slm.prompts import PROMPT_VERSION  # noqa: E402
 
 
 def main():
@@ -57,8 +58,12 @@ def main():
         path = run_dir / split / mode / "summary.json"
         if not path.exists():
             return False
-        if json.loads(path.read_text()).get("split_hash") != hashes[split]:
+        saved = json.loads(path.read_text())
+        if saved.get("split_hash") != hashes[split]:
             print(f"{path} was computed on a different version of the {split} split; redoing it.")
+            return False
+        if saved.get("prompt_version") != PROMPT_VERSION:
+            print(f"{path} was computed with an older prompt; redoing it.")
             return False
         return True
 
@@ -73,7 +78,8 @@ def main():
         items = get_split(cfg, split, problems)[: args.limit]
         t0 = time.time()
         records, summary = evaluate(gen, items, cfg, n=n, temperature=temperature, top_p=top_p)
-        meta = {"run": args.run, "model": model, "split": split, "split_hash": hashes[split], "mode": mode,
+        meta = {"run": args.run, "model": model, "split": split, "split_hash": hashes[split],
+                "prompt_version": PROMPT_VERSION, "mode": mode,
                 "temperature": temperature, "top_p": top_p, "backend": gen.backend,
                 "seconds": round(time.time() - t0, 1)}
         out = run_dir / split / mode

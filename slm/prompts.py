@@ -1,12 +1,21 @@
 """The fixed prompt template and code extraction rule.
 
-Do not change these after Run A: every run must be evaluated with the same
-prompt and extraction, or the comparisons between runs stop being fair.
+Every run must be evaluated with the same prompt and extraction, or the
+comparisons between runs stop being fair. If you ever change them, bump
+PROMPT_VERSION: results saved under an older version are then redone
+instead of reused.
+
+Version history:
+    1  first Run A
+    2  show the problem's test setup code in the prompt (3 problems, e.g. task
+       367 builds its test tree with a Node class the model couldn't see)
 """
 from __future__ import annotations
 
 import ast
 import re
+
+PROMPT_VERSION = 2
 
 SYSTEM_PROMPT = "You are an expert Python programmer."
 
@@ -17,6 +26,12 @@ Your code should pass this test:
 
 Write the complete function in a single ```python code block. Do not include test cases or example usage."""
 
+SETUP_TEMPLATE = """
+
+The test runs after this setup code, which uses your code:
+
+{setup}"""
+
 _FENCED = re.compile(r"```(?:python|py|Python)?[ \t]*\n(.*?)```", re.DOTALL)
 _OPEN_FENCE = re.compile(r"```(?:python|py|Python)?[ \t]*\n(.*)", re.DOTALL)
 
@@ -24,6 +39,9 @@ _OPEN_FENCE = re.compile(r"```(?:python|py|Python)?[ \t]*\n(.*)", re.DOTALL)
 def build_messages(problem: dict, n_shown_tests: int = 1) -> list[dict]:
     """Chat messages for one MBPP problem, showing the first n_shown_tests asserts."""
     tests = "\n".join(problem["test_list"][:n_shown_tests])
+    setup = problem.get("test_setup_code", "").strip()
+    if setup:
+        tests += SETUP_TEMPLATE.format(setup=setup)
     return [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": USER_TEMPLATE.format(text=problem["text"], tests=tests)},
