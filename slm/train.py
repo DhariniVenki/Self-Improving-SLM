@@ -58,6 +58,8 @@ def train_lora(examples: list[dict], cfg: dict, out_dir: str | Path, learning_ra
     from peft import LoraConfig, get_peft_model
     from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
 
+    from .generate import bf16_supported
+
     t = cfg["train"]
     learning_rate = learning_rate or t["learning_rate"]
     epochs = epochs or t["epochs"]
@@ -69,7 +71,7 @@ def train_lora(examples: list[dict], cfg: dict, out_dir: str | Path, learning_ra
     n_truncated = sum(len(d["input_ids"]) == t["max_length"] for d in data)
 
     # Weights stay in float32; bf16 (A100) or fp16 (T4) is used only for the forward pass.
-    use_bf16 = torch.cuda.is_available() and torch.cuda.is_bf16_supported()
+    use_bf16 = bf16_supported()
     use_fp16 = torch.cuda.is_available() and not use_bf16
     model = AutoModelForCausalLM.from_pretrained(base, torch_dtype=torch.float32)
     model = get_peft_model(model, LoraConfig(

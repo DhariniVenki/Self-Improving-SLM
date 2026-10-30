@@ -7,10 +7,21 @@ care which one ran.
 from __future__ import annotations
 
 
+def bf16_supported() -> bool:
+    """True on GPUs with native bfloat16 (A100 and newer, compute capability 8.0+).
+
+    torch.cuda.is_bf16_supported() also returns True on a T4, where it is only
+    emulated and vLLM refuses to load the model.
+    """
+    import torch
+
+    return torch.cuda.is_available() and torch.cuda.get_device_capability()[0] >= 8
+
+
 def _pick_dtype():
     import torch
 
-    if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+    if bf16_supported():
         return "bfloat16"
     if torch.cuda.is_available():
         return "float16"  # e.g. Colab T4
