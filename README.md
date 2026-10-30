@@ -23,6 +23,7 @@ slm/sandbox.py         runs a program against its tests, labels the failure type
 slm/generate.py        generation with vLLM (GPU) or Hugging Face
 slm/evaluate.py        generate, run, summarize, save per-problem results
 scripts/               command-line entry points (below)
+results/               run outputs, committed for later analysis
 notebooks/             Colab notebook for Run A
 tests/                 unit tests for the sandbox and extraction
 ```
@@ -30,8 +31,10 @@ tests/                 unit tests for the sandbox and extraction
 ## Quick start (Colab)
 
 Open `notebooks/run_a_colab.ipynb` in Colab with a GPU runtime. It mounts
-Drive, installs dependencies, checks the model and runs Run A, saving
-results to Drive.
+Drive, installs dependencies, checks the model and runs Run A. Results are
+written to Drive while running (so a disconnect loses nothing), and the last
+cell copies them into `results/` and pushes them to GitHub. That cell needs
+a `GITHUB_TOKEN` secret in Colab's Secrets panel.
 
 ## Commands
 
@@ -52,9 +55,10 @@ python scripts/evaluate.py --run A --splits test heldout --pass-at-k 8 \
     --output-dir /content/drive/MyDrive/self-improving-slm
 ```
 
-Results land in `<output_dir>/<run>/<split>/<greedy|sample8>/`:
-`summary.json` (pass@1, failure counts) and `records.jsonl` (one line per
-sample with code, status and per-test results, for McNemar's test later).
+Results land in `results/<run>/<split>/<greedy|sample8>/` and are committed
+to the repo: `summary.json` (pass@1, failure counts) and `records.jsonl`
+(one line per sample with code, status and per-test results, for McNemar's
+test later). `--output-dir` writes somewhere else instead, such as Drive.
 
 ## Protocol decisions
 
