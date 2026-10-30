@@ -7,7 +7,8 @@ seed: 0
 data:
   dataset: google-research-datasets/mbpp
   config: full              # 374 train, 90 validation, 500 test, 10 prompt
-  heldout_size: 60          # taken from train+validation, used for tuning only
+  heldout_size: 150         # taken from train+validation, used for tuning only.
+                            # 60 gave a +/-12.6 point 95% CI, too wide to tune with.
   splits_file: data/splits.json
 
 prompt:

@@ -10,9 +10,11 @@ Later runs pass their fine-tuned model:
 Add --pass-at-k 8 to also sample 8 solutions per problem and report pass@8.
 Results go to <output_dir>/<run>/<split>/<greedy|sampleK>/{records.jsonl,summary.json}.
 Existing results are skipped unless --overwrite, so a Colab restart can
-just rerun the same command.
+just rerun the same command. Results computed on a different version of a
+split (e.g. before the heldout set was resized) are redone automatically.
 """
 import argparse
+import json
 import sys
 import time
 from pathlib import Path
@@ -20,7 +22,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from slm.config import load_config  # noqa: E402
-from slm.data import get_split, load_mbpp  # noqa: E402
+from slm.data import get_split, load_mbpp, load_splits, split_hash  # noqa: E402
 from slm.evaluate import evaluate, print_summary, save  # noqa: E402
 from slm.generate import Generator  # noqa: E402
 
@@ -48,7 +50,19 @@ def main():
         todo.append((split, "greedy", 1, g["eval"]["temperature"], 1.0))
         if args.pass_at_k > 1:
             todo.append((split, f"sample{args.pass_at_k}", args.pass_at_k, g["sample"]["temperature"], g["sample"]["top_p"]))
-    todo = [t for t in todo if args.overwrite or not (run_dir / t[0] / t[1] / "summary.json").exists()]
+    splits = load_splits(cfg["data"]["splits_file"])
+    hashes = {s: split_hash(splits[s][: args.limit]) for s in args.splits}
+
+    def is_current(split, mode):
+        path = run_dir / split / mode / "summary.json"
+        if not path.exists():
+            return False
+        if json.loads(path.read_text()).get("split_hash") != hashes[split]:
+            print(f"{path} was computed on a different version of the {split} split; redoing it.")
+            return False
+        return True
+
+    todo = [t for t in todo if args.overwrite or not is_current(t[0], t[1])]
     if not todo:
         print(f"All results already in {run_dir}; use --overwrite to redo them.")
         return
@@ -59,8 +73,9 @@ def main():
         items = get_split(cfg, split, problems)[: args.limit]
         t0 = time.time()
         records, summary = evaluate(gen, items, cfg, n=n, temperature=temperature, top_p=top_p)
-        meta = {"run": args.run, "model": model, "split": split, "mode": mode, "temperature": temperature,
-                "top_p": top_p, "backend": gen.backend, "seconds": round(time.time() - t0, 1)}
+        meta = {"run": args.run, "model": model, "split": split, "split_hash": hashes[split], "mode": mode,
+                "temperature": temperature, "top_p": top_p, "backend": gen.backend,
+                "seconds": round(time.time() - t0, 1)}
         out = run_dir / split / mode
         save(records, summary, out, meta)
         print_summary(f"run {args.run} / {split} / {mode}  ({meta['seconds']}s)", summary)

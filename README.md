@@ -16,7 +16,7 @@ All runs are scored the same way: greedy decoding on the 500 MBPP test problems.
 
 ```
 configs/default.yaml   every setting (model, splits, sampling, sandbox limits)
-data/splits.json       fixed problem ids: train 404, heldout 60, test 500
+data/splits.json       fixed problem ids: train 314, heldout 150, test 500
 slm/data.py            MBPP loading and splits
 slm/prompts.py         prompt template and code extraction (fixed after Run A)
 slm/sandbox.py         runs a program against its tests, labels the failure type
@@ -53,6 +53,9 @@ python scripts/check_model.py
 # Task 9: Run A on the test and heldout splits, plus pass@8 (finding 5)
 python scripts/evaluate.py --run A --splits test heldout --pass-at-k 8 \
     --output-dir /content/drive/MyDrive/self-improving-slm
+
+# Diagnostic: where the gap to the published MBPP score (52.4%) comes from
+python scripts/compare_published.py
 ```
 
 Results land in `results/<run>/<split>/<greedy|sample8>/` and are committed
@@ -77,8 +80,20 @@ test later). `--output-dir` writes somewhere else instead, such as Drive.
   limits. `if __name__ == "__main__":` blocks don't run. MBPP's
   `test_setup_code` runs after the solution, since it uses the solution's
   classes. The isolation boundary is the throwaway Colab VM.
-- **Splits:** train+validation (464) → 404 train / 60 heldout (seed 0).
-  The 500 test problems are only for evaluation. The 10 `prompt` problems
-  are only for smoke tests.
+- **Splits:** train+validation (464) → 314 train / 150 heldout (seed 0).
+  The heldout set was 60 at first, but that gives a ±12.6-point 95%
+  confidence interval, too wide to choose hyperparameters with; 150 gives
+  about ±8. The 500 test problems are only for evaluation. The 10 `prompt`
+  problems are only for smoke tests. Each result stores a fingerprint of
+  its split, so results from an older split are redone, not reused.
+- **Missing imports in tests:** task 596's tests use `sys` without
+  importing it; any standard-library module a test uses without importing
+  is added to its setup code. No hidden test calls a helper that the shown
+  test doesn't reveal.
 - **Reference solutions:** 961/964 pass their own tests. The failures are
   listed in `data/reference_failures.json`; drop them from Run D's data.
+- **Published scores:** the Qwen2.5-Coder report gives 52.4% on MBPP for
+  this model, measured with EvalPlus on cleaned-up problems. Our protocol
+  is stricter (original problems and tests, one test shown).
+  `scripts/compare_published.py` measures how much each difference
+  matters; results are in `results/A_compare/`.

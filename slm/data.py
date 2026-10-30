@@ -5,13 +5,27 @@ in the group trains and evaluates on exactly the same problem ids.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import random
+import re
 from pathlib import Path
 
 from .config import resolve
 
 SPLIT_NAMES = ("train", "heldout", "test")
+
+# Standard-library modules that a few MBPP tests use without importing
+# (e.g. task 596 calls sys.getsizeof). The reference solutions import them,
+# so a correct solution that doesn't would otherwise fail the test.
+_TEST_MODULES = ("sys", "math", "re", "heapq", "collections", "itertools", "cmath", "string", "operator")
+
+
+def _add_missing_imports(tests: list[str], setup: str) -> str:
+    text = "\n".join(tests) + "\n" + setup
+    missing = [m for m in _TEST_MODULES
+               if re.search(rf"\b{m}\.\w", text) and not re.search(rf"^\s*(import|from)\s+{m}\b", text, re.M)]
+    return "\n".join([f"import {m}" for m in missing] + ([setup] if setup else []))
 
 
 def load_mbpp(cfg: dict) -> dict[int, dict]:
@@ -22,15 +36,47 @@ def load_mbpp(cfg: dict) -> dict[int, dict]:
     problems = {}
     for hf_split in ds:
         for ex in ds[hf_split]:
+            tests = list(ex["test_list"])
             problems[ex["task_id"]] = {
                 "task_id": ex["task_id"],
                 "text": ex["text"],
                 "code": ex["code"],
-                "test_list": list(ex["test_list"]),
-                "test_setup_code": ex.get("test_setup_code") or "",
+                "test_list": tests,
+                "test_setup_code": _add_missing_imports(tests, ex.get("test_setup_code") or ""),
                 "hf_split": hf_split,
             }
     return problems
+
+
+def load_mbpp_sanitized(cfg: dict) -> dict[int, dict]:
+    """The hand-checked 'sanitized' MBPP subset (427 problems), in the same format.
+
+    Its descriptions and tests were cleaned up by the MBPP authors; it is
+    close to what EvalPlus and the Qwen2.5-Coder report evaluate on. Used
+    only for the comparison with published scores, never for training.
+    """
+    from datasets import load_dataset
+
+    ds = load_dataset(cfg["data"]["dataset"], "sanitized")
+    problems = {}
+    for hf_split in ds:
+        for ex in ds[hf_split]:
+            tests = list(ex["test_list"])
+            problems[ex["task_id"]] = {
+                "task_id": ex["task_id"],
+                "text": ex["prompt"],
+                "code": ex["code"],
+                "test_list": tests,
+                "test_setup_code": _add_missing_imports(tests, "\n".join(ex["test_imports"])),
+                "hf_split": hf_split,
+            }
+    return problems
+
+
+def split_hash(ids: list[int]) -> str:
+    """Short fingerprint of a split's problem ids, stored with each result so
+    results computed on an older version of a split are recognised as stale."""
+    return hashlib.sha1(",".join(map(str, sorted(ids))).encode()).hexdigest()[:12]
 
 
 def make_splits(problems: dict[int, dict], heldout_size: int, seed: int) -> dict[str, list[int]]:
