@@ -3,5 +3,8 @@ transformers>=4.44
 torch>=2.1
 pyyaml>=6.0
 tqdm
+# LoRA fine-tuning
+peft>=0.11
+accelerate>=0.30
 # Optional, much faster generation on a GPU. Install separately in Colab:
 #   pip install vllm

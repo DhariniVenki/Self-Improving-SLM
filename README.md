@@ -22,9 +22,11 @@ slm/prompts.py         prompt template and code extraction (fixed after Run A)
 slm/sandbox.py         runs a program against its tests, labels the failure type
 slm/generate.py        generation with vLLM (GPU) or Hugging Face
 slm/evaluate.py        generate, run, summarize, save per-problem results
+slm/selftrain.py       training sets: filter, deduplicate, cap per problem
+slm/train.py           LoRA fine-tuning from the base model, merged for vLLM
 scripts/               command-line entry points (below)
 results/               run outputs, committed for later analysis
-notebooks/             Colab notebook for Run A
+notebooks/             Colab notebooks: Run A; Round 0 and Run D
 tests/                 unit tests for the sandbox and extraction
 ```
 
@@ -54,6 +56,18 @@ python scripts/check_model.py
 python scripts/evaluate.py --run A --splits test heldout --pass-at-k 8 \
     --output-dir /content/drive/MyDrive/self-improving-slm
 
+# Tasks 10-13: 8 samples per training problem from the base model
+python scripts/evaluate.py --run A --splits train --pass-at-k 8
+
+# Task 14 and 20-21: training sets for Runs B and C round 1, and Run D
+python scripts/build_dataset.py --run B_round1 --source A/train/sample8 --filter pass
+python scripts/build_dataset.py --run C_round1 --source A/train/sample8 --filter none
+python scripts/build_dataset.py --run D --source reference
+
+# Tasks 16-19: LoRA fine-tuning, then evaluate the merged model
+python scripts/train.py --run D --model-dir /content/models
+python scripts/evaluate.py --run D --model /content/models/D/merged --splits test heldout
+
 # Diagnostic: where the gap to the published MBPP score (52.4%) comes from
 python scripts/compare_published.py
 ```
@@ -64,6 +78,16 @@ to the repo: `summary.json` (pass@1, failure counts) and `records.jsonl`
 test later). `--output-dir` writes somewhere else instead, such as Drive.
 
 ## Protocol decisions
+
+- **Training data format:** the same prompt as evaluation, and the code in a
+  single ```` ```python ```` block as the response. Loss is on the response
+  (and the end-of-turn token) only. Every run trains from the base model.
+- **Deduplication:** two solutions are duplicates if they are the same
+  program apart from comments and formatting (`ast.unparse`). The first 4
+  distinct ones (in sample order) are kept per problem. Run C keeps failing
+  solutions too, but not empty ones.
+- **Hyperparameters** are tuned once, with Run D on heldout, and reused for
+  B and C so the runs differ only in their training data.
 
 - **Prompt shows 1 test; the sandbox checks all 3.** `passed_shown` in each
   record says whether the shown test passed, and `shown_pass_hidden_fail`
