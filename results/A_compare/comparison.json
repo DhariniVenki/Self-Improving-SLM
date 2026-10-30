@@ -5,29 +5,29 @@
     {
       "setting": "1. ours (original MBPP, 1 test shown)",
       "n_problems": 500,
-      "pass@1": 0.332,
-      "wrong_answer": 276,
-      "runtime": 54
+      "pass@1": 0.336,
+      "wrong_answer": 275,
+      "runtime": 51
     },
     {
       "setting": "2. ours, sanitized-subset problems only",
       "n_problems": 257,
-      "pass@1": 0.39299610894941633,
-      "wrong_answer": 129,
-      "runtime": 23
+      "pass@1": 0.3968871595330739,
+      "wrong_answer": 126,
+      "runtime": 25
     },
     {
       "setting": "3. sanitized descriptions and tests",
       "n_problems": 257,
-      "pass@1": 0.45525291828793774,
+      "pass@1": 0.46303501945525294,
       "wrong_answer": 114,
-      "runtime": 25
+      "runtime": 23
     },
     {
       "setting": "4. sanitized, all 3 tests shown",
       "n_problems": 257,
-      "pass@1": 0.4669260700389105,
-      "wrong_answer": 111,
+      "pass@1": 0.45136186770428016,
+      "wrong_answer": 114,
       "runtime": 23
     }
   ]

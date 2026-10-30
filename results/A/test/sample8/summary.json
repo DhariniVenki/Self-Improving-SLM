@@ -3,32 +3,33 @@
   "model": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
   "split": "test",
   "split_hash": "79c10e1b4d61",
+  "prompt_version": 2,
   "mode": "sample8",
   "temperature": 0.8,
   "top_p": 0.95,
   "backend": "vllm",
-  "seconds": 79.0,
+  "seconds": 66.1,
   "n_problems": 500,
   "samples_per_problem": 8,
   "n_samples": 4000,
-  "pass@1": 0.30575,
-  "problems_solved_at_least_once": 271,
+  "pass@1": 0.31125,
+  "problems_solved_at_least_once": 275,
   "status_counts": {
-    "pass": 1223,
+    "pass": 1245,
     "no_code": 0,
-    "syntax": 32,
-    "runtime": 536,
-    "wrong_answer": 2197,
-    "timeout": 12
+    "syntax": 31,
+    "runtime": 518,
+    "wrong_answer": 2192,
+    "timeout": 14
   },
   "status_share": {
-    "pass": 0.30575,
+    "pass": 0.31125,
     "no_code": 0.0,
-    "syntax": 0.008,
-    "runtime": 0.134,
-    "wrong_answer": 0.54925,
-    "timeout": 0.003
+    "syntax": 0.00775,
+    "runtime": 0.1295,
+    "wrong_answer": 0.548,
+    "timeout": 0.0035
   },
-  "shown_pass_hidden_fail": 287,
-  "pass@8": 0.542
+  "shown_pass_hidden_fail": 294,
+  "pass@8": 0.55
 }
