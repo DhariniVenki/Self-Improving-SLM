@@ -2,23 +2,23 @@
   "n_problems": 500,
   "samples_per_problem": 1,
   "n_samples": 500,
-  "pass@1": 0.326,
-  "problems_solved_at_least_once": 163,
+  "pass@1": 0.332,
+  "problems_solved_at_least_once": 166,
   "status_counts": {
-    "pass": 163,
+    "pass": 166,
     "no_code": 0,
-    "syntax": 1,
+    "syntax": 0,
     "runtime": 54,
-    "wrong_answer": 278,
+    "wrong_answer": 276,
     "timeout": 4
   },
   "status_share": {
-    "pass": 0.326,
+    "pass": 0.332,
     "no_code": 0.0,
-    "syntax": 0.002,
+    "syntax": 0.0,
     "runtime": 0.108,
-    "wrong_answer": 0.556,
+    "wrong_answer": 0.552,
     "timeout": 0.008
   },
-  "shown_pass_hidden_fail": 37
+  "shown_pass_hidden_fail": 38
 }
