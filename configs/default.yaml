@@ -39,8 +39,8 @@ train:
   target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
   learning_rate: 2.0e-4
   epochs: 3
-  batch_size: 8
-  grad_accum: 2             # effective batch 16
+  batch_size: 4             # 8 needs about 12 GB for the logits alone at long prompts
+  grad_accum: 4             # effective batch 16
   warmup_ratio: 0.05
   max_length: 1024          # prompt + response tokens
 

@@ -106,7 +106,7 @@ def train_lora(examples: list[dict], cfg: dict, out_dir: str | Path, learning_ra
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     t0 = time.time()
-    trainer.train()
+    result = trainer.train()
     seconds = time.time() - t0
     peak_gb = torch.cuda.max_memory_allocated() / 1e9 if torch.cuda.is_available() else None
 
@@ -130,6 +130,7 @@ def train_lora(examples: list[dict], cfg: dict, out_dir: str | Path, learning_ra
         "gpu": torch.cuda.get_device_name() if torch.cuda.is_available() else None,
         "train_seconds": round(seconds, 1),
         "peak_gpu_memory_gb": round(peak_gb, 2) if peak_gb is not None else None,
+        "train_loss": result.training_loss,  # mean over all steps
         "first_loss": losses[0] if losses else None,
         "final_loss": losses[-1] if losses else None,
         "loss_history": losses,
