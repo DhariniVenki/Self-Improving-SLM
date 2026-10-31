@@ -18,6 +18,24 @@ import time
 from pathlib import Path
 
 
+def _hide_old_torchao() -> None:
+    """Make peft treat an old torchao as absent instead of raising ImportError.
+
+    Colab ships torchao 0.10, and recent peft refuses to create LoRA layers
+    when any torchao older than it supports is installed. We don't use it.
+    """
+    import importlib.metadata
+    import sys
+
+    try:
+        version = importlib.metadata.version("torchao")
+    except importlib.metadata.PackageNotFoundError:
+        return
+    major, minor = (int(x) for x in version.split(".")[:2])
+    if (major, minor) < (0, 16):
+        sys.modules["torchao"] = None  # importlib.util.find_spec("torchao") now returns None
+
+
 def tokenize_example(tokenizer, example: dict, max_length: int) -> dict:
     prompt = tokenizer.apply_chat_template(example["messages"], tokenize=False, add_generation_prompt=True)
     prompt_ids = tokenizer(prompt, add_special_tokens=False)["input_ids"]
@@ -55,6 +73,8 @@ def train_lora(examples: list[dict], cfg: dict, out_dir: str | Path, learning_ra
     Returns training info: settings, time, peak GPU memory and losses.
     """
     import torch
+
+    _hide_old_torchao()
     from peft import LoraConfig, get_peft_model
     from transformers import AutoModelForCausalLM, AutoTokenizer, Trainer, TrainingArguments
 
