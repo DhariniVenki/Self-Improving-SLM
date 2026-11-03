@@ -152,6 +152,30 @@
       "trainable_share": 0.017497346861940342,
       "first_loss": 0.7423783779144287,
       "final_loss": 0.3919403076171875
+    },
+    "B_round1": {
+      "n_examples": 521,
+      "learning_rate": 0.0005,
+      "epochs": 2,
+      "train_seconds": 83.4,
+      "peak_gpu_memory_gb": 9.37,
+      "gpu": "Tesla T4",
+      "trainable_params": 8798208,
+      "trainable_share": 0.017497346861940342,
+      "first_loss": 0.24424171447753906,
+      "final_loss": 0.1439268946647644
+    },
+    "C_round1": {
+      "n_examples": 1247,
+      "learning_rate": 0.0005,
+      "epochs": 2,
+      "train_seconds": 218.3,
+      "peak_gpu_memory_gb": 12.63,
+      "gpu": "Tesla T4",
+      "trainable_params": 8798208,
+      "trainable_share": 0.017497346861940342,
+      "first_loss": 0.23981974124908448,
+      "final_loss": 0.1709115982055664
     }
   }
 }

@@ -29,3 +29,5 @@
 | Run | Examples | LR | Epochs | Seconds | Peak GPU GB | GPU | Loss first → final |
 |---|---|---|---|---|---|---|---|
 | D | 314 | 0.0005 | 2 | 49.1 | 8.61 | Tesla T4 | 0.742 → 0.392 |
+| B_round1 | 521 | 0.0005 | 2 | 83.4 | 9.37 | Tesla T4 | 0.244 → 0.144 |
+| C_round1 | 1247 | 0.0005 | 2 | 218.3 | 12.63 | Tesla T4 | 0.240 → 0.171 |

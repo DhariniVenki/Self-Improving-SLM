@@ -102,6 +102,10 @@ def write_tables(a: dict, out: Path) -> None:
         md.append("")
     for k, g in a["bootstrap"]["gain_recovered"].items():
         run, ref = k.split(" vs ")
+        if g["estimate"] is None:
+            md.append(f"- Share of {label(ref)}'s gain recovered by {label(run)}: undefined, "
+                      f"{label(ref)} does not beat {a['base']} here")
+            continue
         interval = "" if g["ci95"] is None else f" [{pct(g['ci95'][0])}, {pct(g['ci95'][1])}]"
         note = "" if a.get("reference_gain", {}).get("significant") else \
             f" ({label(ref)}'s own gain over {a['base']} is not significant, so this ratio is unstable)"
@@ -261,10 +265,13 @@ def main():
         print(f"McNemar {x} vs {y}: only {x} {t['only_first']}, only {y} {t['only_second']}, "
               f"p = {fmt_p(t['p_value'])} (Holm {fmt_p(t['p_value_holm'])})")
     for key, g in analysis["bootstrap"]["gain_recovered"].items():
+        if g["estimate"] is None:
+            print(f"Gain recovered, {key}: undefined ({args.reference} does not beat {args.base} here)")
+            continue
         interval = "" if g["ci95"] is None else f" [{pct(g['ci95'][0])}, {pct(g['ci95'][1])}]"
         print(f"Gain recovered, {key}: {pct(g['estimate'])}%{interval}")
     ref = analysis.get("reference_gain")
-    if ref and not ref["significant"] and analysis["bootstrap"]["gain_recovered"]:
+    if ref and ref["difference"] > 0 and not ref["significant"] and analysis["bootstrap"]["gain_recovered"]:
         print(f"Caution: {args.reference}'s gain over {args.base} is not significant "
               f"({100 * ref['difference']:+.1f} points, p = {fmt_p(ref['p_value_holm'])}), so the gain-recovered "
               f"ratio is unstable. Report the direct comparisons with {args.reference} instead.")
