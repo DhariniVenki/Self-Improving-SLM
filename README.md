@@ -24,10 +24,11 @@ slm/generate.py        generation with vLLM (GPU) or Hugging Face
 slm/evaluate.py        generate, run, summarize, save per-problem results
 slm/selftrain.py       training sets: filter, deduplicate, cap per problem
 slm/train.py           LoRA fine-tuning from the base model, merged for vLLM
+slm/livecodebench.py   LiveCodeBench problems released after the model, and their sandbox
 slm/analysis.py        McNemar's test, bootstrap CIs, gain recovered, failure types
 scripts/               command-line entry points (below)
 results/               run outputs, committed for later analysis
-notebooks/             Colab notebooks: Run A; Round 0 and Run D; Round 1 (B, C)
+notebooks/             Colab notebooks: Run A; Round 0 and Run D; Round 1 (B, C); LiveCodeBench
 tests/                 unit tests (no GPU or model needed)
 ```
 
@@ -74,6 +75,9 @@ python scripts/evaluate.py --run D --model /content/models/D/merged --splits tes
 # Runs without results yet are skipped, so rerun it as runs finish.
 python scripts/analyze.py --split test
 python scripts/analyze.py --split heldout
+
+# Task 25: LiveCodeBench, problems released after the model (Oct 2024 on)
+python scripts/livecodebench.py --run A
 
 # Diagnostic: where the gap to the published MBPP score (52.4%) comes from
 python scripts/compare_published.py

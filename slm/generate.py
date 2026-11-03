@@ -48,6 +48,7 @@ class Generator:
         max_new_tokens: int = 512,
         batch_size: int = 32,
         seed: int = 0,
+        max_model_len: int = 2048,  # prompt + completion; LiveCodeBench needs more than MBPP
     ):
         from transformers import AutoTokenizer
 
@@ -62,7 +63,7 @@ class Generator:
         if self.backend == "vllm":
             from vllm import LLM
 
-            self.llm = LLM(model=model, dtype=self.dtype, seed=seed, max_model_len=2048, gpu_memory_utilization=0.85)
+            self.llm = LLM(model=model, dtype=self.dtype, seed=seed, max_model_len=max_model_len, gpu_memory_utilization=0.85)
         else:
             import torch
             from transformers import AutoModelForCausalLM

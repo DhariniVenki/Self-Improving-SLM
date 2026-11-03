@@ -44,6 +44,17 @@ train:
   warmup_ratio: 0.05
   max_length: 1024          # prompt + response tokens
 
+# LiveCodeBench (task 25): competition problems released after the model, so
+# they can't have been in its training data. Qwen2.5-Coder was released
+# 2024-09-18; test5 covers Oct 2024 - Jan 2025 and test6 Jan - Apr 2025.
+livecodebench:
+  dataset: livecodebench/code_generation_lite
+  files: [test5.jsonl, test6.jsonl]
+  since: "2024-10-01"
+  max_new_tokens: 1024      # competition solutions are longer than MBPP's
+  max_model_len: 4096       # longest problem statement is about 1300 tokens
+  timeout_s: 6              # CPU seconds per test, as in LiveCodeBench
+
 sandbox:
   timeout_s: 5              # CPU seconds per program (wall-clock backstop is 3x + 2s)
   memory_mb: 1024
