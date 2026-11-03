@@ -34,10 +34,13 @@ def main():
     ap.add_argument("--model-dir", default=None, help="Where models are saved (default: model_dir in config).")
     ap.add_argument("--learning-rate", type=float, default=None)
     ap.add_argument("--epochs", type=float, default=None)
+    ap.add_argument("--seed", type=int, default=None, help="Override the config seed, for repeated runs.")
     ap.add_argument("--overwrite", action="store_true")
     args = ap.parse_args()
 
     cfg = load_config(args.config, args.output_dir)
+    if args.seed is not None:
+        cfg["seed"] = args.seed
     out_root = Path(cfg["output_dir"])
     info_path = out_root / args.run / "train_info.json"
     model_dir = Path(args.model_dir or cfg["model_dir"]) / args.run

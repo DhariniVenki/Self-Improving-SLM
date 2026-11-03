@@ -1,6 +1,6 @@
 import unittest
 
-from slm.analysis import (bootstrap, ci, gain_recovered, holm, mcnemar, passed_by_task, sampling_stats,
+from slm.analysis import (bootstrap, ci, gain_recovered, group_difference, holm, mcnemar, passed_by_task, sampling_stats,
                           status_shares)
 
 
@@ -10,6 +10,14 @@ def rec(task_id, passed, idx=0, status=None):
 
 
 class AnalysisTest(unittest.TestCase):
+    def test_group_difference_averages_repeats(self):
+        first = [{1: True, 2: False}, {1: False, 2: False}]
+        second = [{1: True, 2: True}, {1: True, 2: False}]
+        d = group_difference(first, second, n_boot=200)
+        self.assertEqual(d["n_problems"], 2)
+        self.assertAlmostEqual(d["difference"], 0.5)  # 0.25 -> 0.75
+        self.assertLessEqual(d["ci95"][0], d["ci95"][1])
+
     def test_mcnemar_counts_and_exact_p(self):
         a = {1: True, 2: True, 3: False, 4: False, 5: True}
         b = {1: True, 2: False, 3: True, 4: True, 5: True}

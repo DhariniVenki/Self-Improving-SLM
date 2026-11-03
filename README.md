@@ -143,3 +143,11 @@ test later). `--output-dir` writes somewhere else instead, such as Drive.
   is stricter (original problems and tests, one test shown).
   `scripts/compare_published.py` measures how much each difference
   matters; results are in `results/A_compare/`.
+- **Self-training fixes** (`self-training-fixes` branch,
+  `notebooks/self_training_fixes_colab.ipynb`). 72% of Run B's examples came
+  from problems greedy already solves, and 135 of 314 train problems had no
+  passing sample. The notebook tries 32 samples per problem, fewer examples
+  from solved problems, and a lower learning rate. The 6 candidates, listed in
+  `configs/default.yaml`, are compared on heldout only; the chosen one is saved
+  in `results/fixes/selection.json` before it is scored on test, then compared
+  with A and B over 3 repeats each.

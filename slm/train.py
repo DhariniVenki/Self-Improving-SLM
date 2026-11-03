@@ -138,6 +138,7 @@ def train_lora(examples: list[dict], cfg: dict, out_dir: str | Path, learning_ra
     losses = [h["loss"] for h in trainer.state.log_history if "loss" in h]
     return {
         "base_model": base,
+        "seed": cfg["seed"],
         "n_examples": len(examples),
         "n_truncated": n_truncated,
         "learning_rate": learning_rate,

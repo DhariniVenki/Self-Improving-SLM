@@ -127,6 +127,26 @@ def ci(xs: list[float], level: float = 0.95) -> list[float]:
     return [percentile(xs, (1 - level) / 2), percentile(xs, (1 + level) / 2)]
 
 
+def group_difference(first: list[dict[int, bool]], second: list[dict[int, bool]],
+                     n_boot: int = 10000, seed: int = 0) -> dict:
+    """Mean pass@1 of repeated runs of second minus first, with a bootstrap CI.
+
+    Each problem's pass rate is averaged over the repeats, and problems are
+    resampled, so the interval covers the choice of problems. With 3 repeats
+    the run-to-run noise is averaged down but not resampled.
+    """
+    tasks = sorted(set.intersection(*(set(p) for p in first + second)))
+    rate = lambda runs, t: sum(p[t] for p in runs) / len(runs)
+    diffs = [rate(second, t) - rate(first, t) for t in tasks]
+    n = len(tasks)
+    rng = random.Random(seed)
+    boots = []
+    for _ in range(n_boot):
+        idx = rng.choices(range(n), k=n)
+        boots.append(sum(diffs[i] for i in idx) / n)
+    return {"n_problems": n, "difference": sum(diffs) / n, "ci95": ci(boots), "n_boot": n_boot}
+
+
 def bootstrap(passed: dict[str, dict[int, bool]], pairs: list[tuple[str, str]],
               recover: list[tuple[str, str, str]], n_boot: int = 10000, seed: int = 0) -> dict:
     """Percentile bootstrap over problems, shared by all runs.

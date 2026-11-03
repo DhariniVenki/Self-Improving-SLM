@@ -29,6 +29,17 @@ generation:
 selftrain:
   max_per_problem: 4        # distinct solutions kept per problem (Runs B and C)
 
+# Self-training fixes, compared on heldout (notebooks/self_training_fixes_colab.ipynb).
+# Fixed before any of them was run, so the best one isn't chosen after the fact.
+fixes:
+  sample_k: 32              # more attempts per training problem (was 8)
+  datasets:                 # examples kept per problem greedy already solves
+    B32: 4                  # more samples only
+    B32_weighted: 1         # mostly problems greedy gets wrong
+    B32_hard: 0             # only problems greedy gets wrong
+  learning_rates: [5.0e-4, 1.0e-4]
+  repeat_seeds: [1, 2]      # extra training seeds for the final comparison
+
 # LoRA fine-tuning. Every run starts from the base model above. Tune
 # learning_rate and epochs on heldout with Run D (task 18), then use the
 # same values for B and C so the runs differ only in their data.

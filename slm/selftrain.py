@@ -35,14 +35,34 @@ def format_response(code: str) -> str:
     return f"```python\n{code.strip()}\n```"
 
 
-def select_samples(records: list[dict], only_passing: bool, max_per_problem: int) -> list[dict]:
-    """Distinct samples per problem, in sample order, at most max_per_problem each."""
+def per_problem_caps(greedy_records: list[dict], max_per_problem: int, solved_cap: int) -> dict[int, int]:
+    """Cap per problem: solved_cap where greedy already passes, else max_per_problem.
+
+    Solutions to problems the model already solves teach it little, so these
+    caps shift the training set toward problems it gets wrong (0 drops the
+    solved problems, 1 keeps one example of each).
+    """
+    return {r["task_id"]: solved_cap if r["passed"] else max_per_problem for r in greedy_records}
+
+
+def fix_candidates(cfg: dict) -> list[dict]:
+    """The self-training variants to compare on heldout, in tie-break order."""
+    fixes = cfg["fixes"]
+    return [{"run": f"{name}_lr{lr:g}", "data_run": name, "solved_cap": cap, "learning_rate": lr}
+            for name, cap in fixes["datasets"].items() for lr in fixes["learning_rates"]]
+
+
+def select_samples(records: list[dict], only_passing: bool, max_per_problem: int,
+                   caps: dict[int, int] | None = None) -> list[dict]:
+    """Distinct samples per problem, in sample order, at most max_per_problem each
+    (or caps[task_id] for the problems listed in caps)."""
     by_task: dict[int, list[dict]] = {}
     for r in sorted(records, key=lambda r: (r["task_id"], r["sample_idx"])):
         by_task.setdefault(r["task_id"], []).append(r)
 
     chosen = []
-    for rs in by_task.values():
+    for task_id, rs in by_task.items():
+        cap = (caps or {}).get(task_id, max_per_problem)
         seen = set()
         for r in rs:
             if not r["code"].strip() or (only_passing and not r["passed"]):
@@ -51,7 +71,7 @@ def select_samples(records: list[dict], only_passing: bool, max_per_problem: int
             if key in seen:
                 continue
             seen.add(key)
-            if len(seen) <= max_per_problem:
+            if len(seen) <= cap:
                 chosen.append(r)
     return chosen
 
@@ -67,14 +87,15 @@ def distinct_counts(records: list[dict], only_passing: bool) -> dict[int, int]:
 
 
 def examples_from_samples(records: list[dict], problems: dict[int, dict], only_passing: bool,
-                          max_per_problem: int, n_shown_tests: int) -> list[dict]:
+                          max_per_problem: int, n_shown_tests: int,
+                          caps: dict[int, int] | None = None) -> list[dict]:
     return [{
         "task_id": r["task_id"],
         "sample_idx": r["sample_idx"],
         "status": r["status"],
         "messages": build_messages(problems[r["task_id"]], n_shown_tests),
         "response": format_response(r["code"]),
-    } for r in select_samples(records, only_passing, max_per_problem)]
+    } for r in select_samples(records, only_passing, max_per_problem, caps)]
 
 
 def examples_from_references(problems: list[dict], n_shown_tests: int, exclude: set[int] = frozenset()) -> list[dict]:

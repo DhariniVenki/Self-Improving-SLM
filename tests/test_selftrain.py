@@ -1,6 +1,7 @@
 import unittest
 
-from slm.selftrain import distinct_counts, examples_from_references, format_response, normalize, select_samples, stats
+from slm.selftrain import (distinct_counts, examples_from_references, fix_candidates, format_response, normalize,
+                           per_problem_caps, select_samples, stats)
 
 
 def rec(task_id, idx, code, passed=True, status=None):
@@ -34,6 +35,20 @@ class SelfTrainTest(unittest.TestCase):
         records = [rec(1, i, c) for i, c in enumerate(codes)]
         chosen = select_samples(records, only_passing=True, max_per_problem=4)
         self.assertEqual([r["sample_idx"] for r in chosen], [0, 1, 2, 3])
+
+    def test_caps_favor_problems_greedy_fails(self):
+        greedy = [rec(1, 0, MAX), rec(2, 0, FIRST, passed=False)]
+        self.assertEqual(per_problem_caps(greedy, 4, 1), {1: 1, 2: 4})
+        records = [rec(t, i, f"def f():\n    return {i}") for t in (1, 2) for i in range(3)]
+        for solved_cap, expected in [(0, [2, 2, 2]), (1, [1, 2, 2, 2])]:
+            chosen = select_samples(records, True, 4, per_problem_caps(greedy, 4, solved_cap))
+            self.assertEqual([r["task_id"] for r in chosen], expected)
+
+    def test_fix_candidates(self):
+        cfg = {"fixes": {"datasets": {"X": 4, "Y": 0}, "learning_rates": [5e-4, 1e-4]}}
+        cands = fix_candidates(cfg)
+        self.assertEqual([c["run"] for c in cands], ["X_lr0.0005", "X_lr0.0001", "Y_lr0.0005", "Y_lr0.0001"])
+        self.assertEqual(cands[2]["solved_cap"], 0)
 
     def test_empty_code_never_kept(self):
         records = [rec(1, 0, "", passed=False, status="no_code")]
