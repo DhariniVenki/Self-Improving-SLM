@@ -1,0 +1,34 @@
+{
+  "run": "C_round1",
+  "model": "/content/models/C_round1/merged",
+  "split": "heldout",
+  "split_hash": "c49c4968a8cf",
+  "prompt_version": 2,
+  "mode": "greedy",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "backend": "vllm",
+  "seconds": 10.9,
+  "n_problems": 150,
+  "samples_per_problem": 1,
+  "n_samples": 150,
+  "pass@1": 0.42,
+  "problems_solved_at_least_once": 63,
+  "status_counts": {
+    "pass": 63,
+    "no_code": 0,
+    "syntax": 0,
+    "runtime": 13,
+    "wrong_answer": 74,
+    "timeout": 0
+  },
+  "status_share": {
+    "pass": 0.42,
+    "no_code": 0.0,
+    "syntax": 0.0,
+    "runtime": 0.08666666666666667,
+    "wrong_answer": 0.49333333333333335,
+    "timeout": 0.0
+  },
+  "shown_pass_hidden_fail": 11
+}
