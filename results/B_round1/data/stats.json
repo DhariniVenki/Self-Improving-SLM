@@ -1,0 +1,31 @@
+{
+  "source": "A/train/sample8",
+  "filter": "pass",
+  "max_per_problem": 4,
+  "n_examples": 521,
+  "n_problems": 314,
+  "problems_with_examples": 179,
+  "problems_without_examples": 135,
+  "examples_per_problem": {
+    "1": 41,
+    "2": 24,
+    "3": 24,
+    "4": 90
+  },
+  "status_counts": {
+    "pass": 521
+  },
+  "share_not_passing": 0.0,
+  "distinct_before_cap_per_problem": {
+    "0": 135,
+    "1": 41,
+    "2": 24,
+    "3": 24,
+    "4": 22,
+    "5": 27,
+    "6": 21,
+    "7": 10,
+    "8": 10
+  },
+  "distinct_before_cap_total": 660
+}

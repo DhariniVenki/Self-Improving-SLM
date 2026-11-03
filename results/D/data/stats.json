@@ -1,0 +1,14 @@
+{
+  "source": "reference",
+  "n_examples": 314,
+  "n_problems": 314,
+  "problems_with_examples": 314,
+  "problems_without_examples": 0,
+  "examples_per_problem": {
+    "1": 314
+  },
+  "status_counts": {
+    "reference": 314
+  },
+  "share_not_passing": 0.0
+}

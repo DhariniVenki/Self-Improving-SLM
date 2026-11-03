@@ -1,0 +1,34 @@
+{
+  "run": "D_tune/lr0.0001_ep1",
+  "model": "/content/models/D_tune/lr0.0001_ep1/merged",
+  "split": "heldout",
+  "split_hash": "c49c4968a8cf",
+  "prompt_version": 2,
+  "mode": "greedy",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "backend": "vllm",
+  "seconds": 15.2,
+  "n_problems": 150,
+  "samples_per_problem": 1,
+  "n_samples": 150,
+  "pass@1": 0.4533333333333333,
+  "problems_solved_at_least_once": 68,
+  "status_counts": {
+    "pass": 68,
+    "no_code": 0,
+    "syntax": 2,
+    "runtime": 12,
+    "wrong_answer": 68,
+    "timeout": 0
+  },
+  "status_share": {
+    "pass": 0.4533333333333333,
+    "no_code": 0.0,
+    "syntax": 0.013333333333333334,
+    "runtime": 0.08,
+    "wrong_answer": 0.4533333333333333,
+    "timeout": 0.0
+  },
+  "shown_pass_hidden_fail": 12
+}

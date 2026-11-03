@@ -1,0 +1,40 @@
+{
+  "base_model": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+  "n_examples": 314,
+  "n_truncated": 0,
+  "learning_rate": 0.0005,
+  "epochs": 1.0,
+  "lora_r": 16,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj",
+    "down_proj"
+  ],
+  "batch_size": 4,
+  "grad_accum": 4,
+  "max_length": 1024,
+  "warmup_ratio": 0.05,
+  "trainable_params": 8798208,
+  "trainable_share": 0.017497346861940342,
+  "precision": "fp16",
+  "gpu": "Tesla T4",
+  "train_seconds": 25.0,
+  "peak_gpu_memory_gb": 8.61,
+  "train_loss": 0.6294088125228882,
+  "first_loss": 0.7236105918884277,
+  "final_loss": 0.5463104724884034,
+  "loss_history": [
+    0.7236105918884277,
+    0.6300140380859375,
+    0.6177001476287842,
+    0.5463104724884034
+  ],
+  "merged_model": "/content/models/D_tune/lr0.0005_ep1/merged",
+  "data": "/content/drive/MyDrive/self-improving-slm/D/data/train.jsonl"
+}

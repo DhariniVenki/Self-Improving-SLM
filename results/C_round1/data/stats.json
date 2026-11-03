@@ -1,0 +1,32 @@
+{
+  "source": "A/train/sample8",
+  "filter": "none",
+  "max_per_problem": 4,
+  "n_examples": 1247,
+  "n_problems": 314,
+  "problems_with_examples": 314,
+  "problems_without_examples": 0,
+  "examples_per_problem": {
+    "2": 3,
+    "3": 3,
+    "4": 308
+  },
+  "status_counts": {
+    "wrong_answer": 666,
+    "pass": 386,
+    "runtime": 180,
+    "syntax": 11,
+    "timeout": 4
+  },
+  "share_not_passing": 0.6904570970328789,
+  "distinct_before_cap_per_problem": {
+    "2": 3,
+    "3": 3,
+    "4": 13,
+    "5": 12,
+    "6": 26,
+    "7": 48,
+    "8": 209
+  },
+  "distinct_before_cap_total": 2291
+}

@@ -1,0 +1,34 @@
+{
+  "run": "D",
+  "model": "/content/models/D/merged",
+  "split": "test",
+  "split_hash": "79c10e1b4d61",
+  "prompt_version": 2,
+  "mode": "greedy",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "backend": "vllm",
+  "seconds": 43.6,
+  "n_problems": 500,
+  "samples_per_problem": 1,
+  "n_samples": 500,
+  "pass@1": 0.372,
+  "problems_solved_at_least_once": 186,
+  "status_counts": {
+    "pass": 186,
+    "no_code": 0,
+    "syntax": 4,
+    "runtime": 51,
+    "wrong_answer": 256,
+    "timeout": 3
+  },
+  "status_share": {
+    "pass": 0.372,
+    "no_code": 0.0,
+    "syntax": 0.008,
+    "runtime": 0.102,
+    "wrong_answer": 0.512,
+    "timeout": 0.006
+  },
+  "shown_pass_hidden_fail": 39
+}
