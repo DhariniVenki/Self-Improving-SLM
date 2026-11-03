@@ -26,7 +26,7 @@ slm/selftrain.py       training sets: filter, deduplicate, cap per problem
 slm/train.py           LoRA fine-tuning from the base model, merged for vLLM
 scripts/               command-line entry points (below)
 results/               run outputs, committed for later analysis
-notebooks/             Colab notebooks: Run A; Round 0 and Run D
+notebooks/             Colab notebooks: Run A; Round 0 and Run D; Round 1 (B, C)
 tests/                 unit tests for the sandbox and extraction
 ```
 
