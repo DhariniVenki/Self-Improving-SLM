@@ -1,0 +1,15 @@
+\begin{table}[t]
+\caption{Greedy pass@1 on MBPP heldout (150 problems), with 95\% bootstrap intervals. $\Delta$ is the change from run A; $p$ is McNemar's exact test, Holm-corrected. Failure columns are shares of all problems.}
+\label{tab:results}
+\centering\small
+\begin{tabular}{llccccc}
+\toprule
+Run & Trained on & pass@1 & $\Delta$ & $p$ & Wrong & Runtime \\
+\midrule
+A & nothing (base model) & 48.0 [40.0, 56.0] &  &  & 44.7 & 7.3 \\
+B (round 1) & own passing solutions & 45.3 [37.3, 53.3] & -2.7 [-8.0, +2.7] & 0.905 & 45.3 & 9.3 \\
+C (round 1) & own solutions, unfiltered & 42.0 [34.0, 50.0] & -6.0 [-11.3, -0.7] & 0.196 & 49.3 & 8.7 \\
+D & human solutions & 44.7 [36.7, 52.7] & -3.3 [-10.0, +3.3] & 0.905 & 48.0 & 5.3 \\
+\bottomrule
+\end{tabular}
+\end{table}
