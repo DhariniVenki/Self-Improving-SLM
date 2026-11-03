@@ -5,11 +5,12 @@
   "reference": "D",
   "runs": [
     "A",
-    "B_round1",
-    "C_round1",
     "D"
   ],
-  "missing_runs": [],
+  "missing_runs": [
+    "B_round1",
+    "C_round1"
+  ],
   "k": 8,
   "pass@k": {
     "A": 0.55
@@ -23,22 +24,6 @@
       "wrong_answer": 0.546,
       "timeout": 0.004
     },
-    "B_round1": {
-      "pass": 0.352,
-      "no_code": 0.0,
-      "syntax": 0.006,
-      "runtime": 0.108,
-      "wrong_answer": 0.53,
-      "timeout": 0.004
-    },
-    "C_round1": {
-      "pass": 0.324,
-      "no_code": 0.0,
-      "syntax": 0.0,
-      "runtime": 0.104,
-      "wrong_answer": 0.568,
-      "timeout": 0.004
-    },
     "D": {
       "pass": 0.372,
       "no_code": 0.0,
@@ -49,15 +34,6 @@
     }
   },
   "mcnemar": {
-    "A:B_round1": {
-      "n_problems": 500,
-      "both_pass": 141,
-      "neither_pass": 297,
-      "only_first": 27,
-      "only_second": 35,
-      "p_value": 0.3741517124047949,
-      "p_value_holm": 0.7483034248095898
-    },
     "A:D": {
       "n_problems": 500,
       "both_pass": 119,
@@ -65,25 +41,7 @@
       "only_first": 49,
       "only_second": 67,
       "p_value": 0.11408316540850243,
-      "p_value_holm": 0.34224949622550727
-    },
-    "B_round1:C_round1": {
-      "n_problems": 500,
-      "both_pass": 141,
-      "neither_pass": 303,
-      "only_first": 35,
-      "only_second": 21,
-      "p_value": 0.08142681460950621,
-      "p_value_holm": 0.32570725843802484
-    },
-    "A:C_round1": {
-      "n_problems": 500,
-      "both_pass": 138,
-      "neither_pass": 308,
-      "only_first": 30,
-      "only_second": 24,
-      "p_value": 0.4966174353179338,
-      "p_value_holm": 0.7483034248095898
+      "p_value_holm": 0.11408316540850243
     }
   },
   "bootstrap": {
@@ -97,20 +55,6 @@
           0.378
         ]
       },
-      "B_round1": {
-        "estimate": 0.352,
-        "ci95": [
-          0.31,
-          0.394
-        ]
-      },
-      "C_round1": {
-        "estimate": 0.324,
-        "ci95": [
-          0.284,
-          0.364
-        ]
-      },
       "D": {
         "estimate": 0.372,
         "ci95": [
@@ -120,52 +64,23 @@
       }
     },
     "difference": {
-      "B_round1 - A": {
-        "estimate": 0.016,
-        "ci95": [
-          -0.014000000000000012,
-          0.04799999999999999
-        ]
-      },
       "D - A": {
         "estimate": 0.036,
         "ci95": [
           -0.006000000000000005,
           0.07800000000000001
         ]
-      },
-      "C_round1 - B_round1": {
-        "estimate": -0.028,
-        "ci95": [
-          -0.057999999999999996,
-          0.0020000000000000018
-        ]
-      },
-      "C_round1 - A": {
-        "estimate": -0.012,
-        "ci95": [
-          -0.04199999999999998,
-          0.016000000000000014
-        ]
       }
     },
-    "gain_recovered": {
-      "B_round1 vs D": {
-        "estimate": 0.4444444444444436,
-        "ci95": [
-          -0.7050000000000001,
-          2.6666666666666665
-        ],
-        "resamples_used": 9487
-      },
-      "C_round1 vs D": {
-        "estimate": -0.33333333333333387,
-        "ci95": [
-          -4.333333333333324,
-          0.42857142857142855
-        ],
-        "resamples_used": 9487
-      }
-    }
+    "gain_recovered": {}
+  },
+  "reference_gain": {
+    "difference": 0.036,
+    "ci95": [
+      -0.006000000000000005,
+      0.07800000000000001
+    ],
+    "p_value_holm": 0.11408316540850243,
+    "significant": false
   }
 }

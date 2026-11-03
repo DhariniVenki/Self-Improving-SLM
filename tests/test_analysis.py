@@ -1,6 +1,7 @@
 import unittest
 
-from slm.analysis import bootstrap, ci, gain_recovered, holm, mcnemar, passed_by_task, status_shares
+from slm.analysis import (bootstrap, ci, gain_recovered, holm, mcnemar, passed_by_task, sampling_stats,
+                          status_shares)
 
 
 def rec(task_id, passed, idx=0, status=None):
@@ -60,6 +61,18 @@ class AnalysisTest(unittest.TestCase):
         a = {i: i % 2 == 0 for i in range(30)}
         run = lambda: bootstrap({"A": a}, [], [], n_boot=50, seed=1)["pass@1"]["A"]["ci95"]
         self.assertEqual(run(), run())
+
+    def test_sampling_stats(self):
+        # Problem 1: both samples pass. Problem 2: one passes the shown test only. Problem 3: none.
+        records = [dict(rec(1, True, i), passed_shown=True) for i in range(2)]
+        records += [dict(rec(2, False, 0), passed_shown=True), dict(rec(2, False, 1), passed_shown=False)]
+        records += [dict(rec(3, False, i), passed_shown=False) for i in range(2)]
+        summary = {"n_problems": 3, "samples_per_problem": 2, "pass@1": 1 / 3, "pass@2": 1 / 3,
+                   "problems_solved_at_least_once": 1, "shown_pass_hidden_fail": 1, "status_share": {}}
+        s = sampling_stats(summary, records)
+        self.assertEqual((s["never_solved"], s["always_solved"]), (2, 1))
+        self.assertEqual(s["solve_count_histogram"], {0: 2, 1: 0, 2: 1})
+        self.assertAlmostEqual(s["hidden_fail_share_of_shown_pass"], 1 / 3)
 
 
 if __name__ == "__main__":

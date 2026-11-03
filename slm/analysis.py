@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import random
+from collections import Counter
 from math import comb
 from pathlib import Path
 
@@ -48,6 +49,31 @@ def status_shares(records: list[dict]) -> dict[str, float]:
         status.setdefault(r["task_id"], r["status"])
     n = len(status)
     return {s: sum(v == s for v in status.values()) / n for s in STATUSES}
+
+
+def sampling_stats(summary: dict, records: list[dict]) -> dict:
+    """Round 0 statistics for one split sampled k times (tasks 12-13)."""
+    n = summary["n_problems"]
+    k = summary["samples_per_problem"]
+    correct = Counter()
+    for r in records:
+        correct[r["task_id"]] += r["passed"]
+    shown_pass = sum(r["passed_shown"] for r in records)
+    return {
+        "n_problems": n,
+        "samples_per_problem": k,
+        "pass@1": summary["pass@1"],
+        f"pass@{k}": summary[f"pass@{k}"],
+        "never_solved": n - summary["problems_solved_at_least_once"],
+        "always_solved": sum(c == k for c in correct.values()),
+        # How many of the k samples solve each problem: {0: problems, 1: ..., k: ...}.
+        "solve_count_histogram": {c: sum(v == c for v in correct.values()) for c in range(k + 1)},
+        "samples_passing_shown_test": shown_pass,
+        "shown_pass_hidden_fail": summary["shown_pass_hidden_fail"],
+        # Of the samples that pass the test in the prompt, the share that fail a hidden one.
+        "hidden_fail_share_of_shown_pass": summary["shown_pass_hidden_fail"] / shown_pass if shown_pass else 0.0,
+        "status_share": summary["status_share"],
+    }
 
 
 def mcnemar(a: dict[int, bool], b: dict[int, bool]) -> dict:

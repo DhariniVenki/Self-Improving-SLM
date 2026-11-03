@@ -88,6 +88,24 @@ def write_tables(a: dict, out: Path) -> None:
           f"are within run-to-run noise.", "",
           "| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
     md += ["| " + " | ".join(r[k] for k in keys) + " |" for r in rows]
+    others = [(k, t) for k, t in a["mcnemar"].items() if not k.startswith(f"{a['base']}:")]
+    if others:
+        md += ["", "Other comparisons (McNemar, Holm-corrected):", ""]
+        for k, t in others:
+            x, y = k.split(":")
+            diff = a["bootstrap"]["difference"][f"{y} - {x}"]
+            md.append(f"- {label(y)} vs {label(x)}: {100 * diff['estimate']:+.1f} points "
+                      f"[{100 * diff['ci95'][0]:+.1f}, {100 * diff['ci95'][1]:+.1f}], "
+                      f"only {label(x)} solves {t['only_first']}, only {label(y)} solves {t['only_second']}, "
+                      f"p = {fmt_p(t['p_value_holm'])}")
+    if a["bootstrap"]["gain_recovered"] and not others:
+        md.append("")
+    for k, g in a["bootstrap"]["gain_recovered"].items():
+        run, ref = k.split(" vs ")
+        interval = "" if g["ci95"] is None else f" [{pct(g['ci95'][0])}, {pct(g['ci95'][1])}]"
+        note = "" if a.get("reference_gain", {}).get("significant") else \
+            f" ({label(ref)}'s own gain over {a['base']} is not significant, so this ratio is unstable)"
+        md.append(f"- Share of {label(ref)}'s gain recovered by {label(run)}: {pct(g['estimate'])}%{interval}{note}")
     (out / "results_table.md").write_text("\n".join(md) + "\n")
 
     tex = [r"\begin{table}[t]", r"\caption{Greedy pass@1 on MBPP " + a["split"] + f" ({a['n_problems']} problems), "
@@ -158,7 +176,7 @@ def main():
     ap.add_argument("--base", default="A", help="Baseline run.")
     ap.add_argument("--reference", default="D", help="Run whose gain the others are measured against.")
     ap.add_argument("--compare", nargs="+", type=parse_pair,
-                    default=[("A", "B_round1"), ("A", "D"), ("B_round1", "C_round1")],
+                    default=[("A", "B_round1"), ("A", "D"), ("B_round1", "C_round1"), ("B_round1", "D")],
                     help="McNemar comparisons as FIRST:SECOND.")
     ap.add_argument("--k", type=int, default=8, help="pass@k from each run's sample<k> results, if any.")
     ap.add_argument("--n-boot", type=int, default=10000)
@@ -216,6 +234,17 @@ def main():
         "mcnemar": {f"{x}:{y}": t for (x, y), t in zip(compare, tests)},
         "bootstrap": bootstrap(passed, compare, recover, args.n_boot, cfg["seed"]),
     }
+    # Gain recovered divides by the reference's gain over the base. When that gain
+    # could be zero, the ratio is unstable and shouldn't be reported on its own.
+    ref_key = f"{args.base}:{args.reference}"
+    if ref_key in analysis["mcnemar"]:
+        diff = analysis["bootstrap"]["difference"][f"{args.reference} - {args.base}"]
+        analysis["reference_gain"] = {
+            "difference": diff["estimate"],
+            "ci95": diff["ci95"],
+            "p_value_holm": analysis["mcnemar"][ref_key]["p_value_holm"],
+            "significant": analysis["mcnemar"][ref_key]["p_value_holm"] < 0.05 and diff["ci95"][0] > 0,
+        }
     out = root / "analysis" / args.split
     out.mkdir(parents=True, exist_ok=True)
     (out / "analysis.json").write_text(json.dumps(analysis, indent=2) + "\n")
@@ -234,6 +263,11 @@ def main():
     for key, g in analysis["bootstrap"]["gain_recovered"].items():
         interval = "" if g["ci95"] is None else f" [{pct(g['ci95'][0])}, {pct(g['ci95'][1])}]"
         print(f"Gain recovered, {key}: {pct(g['estimate'])}%{interval}")
+    ref = analysis.get("reference_gain")
+    if ref and not ref["significant"] and analysis["bootstrap"]["gain_recovered"]:
+        print(f"Caution: {args.reference}'s gain over {args.base} is not significant "
+              f"({100 * ref['difference']:+.1f} points, p = {fmt_p(ref['p_value_holm'])}), so the gain-recovered "
+              f"ratio is unstable. Report the direct comparisons with {args.reference} instead.")
     print(f"\nsaved to {out}")
 
 

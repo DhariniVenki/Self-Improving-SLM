@@ -75,6 +75,8 @@ python scripts/evaluate.py --run D --model /content/models/D/merged --splits tes
 # Runs without results yet are skipped, so rerun it as runs finish.
 python scripts/analyze.py --split test
 python scripts/analyze.py --split heldout
+# Round 0 statistics (tasks 12-14, 20-21), Run D's tuning grid and training cost
+python scripts/round0_report.py
 
 # Task 25: LiveCodeBench, problems released after the model (Oct 2024 on)
 python scripts/livecodebench.py --run A

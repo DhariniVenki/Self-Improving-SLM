@@ -1,0 +1,157 @@
+{
+  "sampling": {
+    "train": {
+      "n_problems": 314,
+      "samples_per_problem": 8,
+      "pass@1": 0.321656050955414,
+      "pass@8": 0.5700636942675159,
+      "never_solved": 135,
+      "always_solved": 34,
+      "solve_count_histogram": {
+        "0": 135,
+        "1": 39,
+        "2": 20,
+        "3": 14,
+        "4": 9,
+        "5": 24,
+        "6": 14,
+        "7": 25,
+        "8": 34
+      },
+      "samples_passing_shown_test": 987,
+      "shown_pass_hidden_fail": 179,
+      "hidden_fail_share_of_shown_pass": 0.18135764944275581,
+      "status_share": {
+        "pass": 0.321656050955414,
+        "no_code": 0.0,
+        "syntax": 0.0051751592356687895,
+        "runtime": 0.13495222929936307,
+        "wrong_answer": 0.5346337579617835,
+        "timeout": 0.0035828025477707007
+      }
+    },
+    "test": {
+      "n_problems": 500,
+      "samples_per_problem": 8,
+      "pass@1": 0.31125,
+      "pass@8": 0.55,
+      "never_solved": 225,
+      "always_solved": 39,
+      "solve_count_histogram": {
+        "0": 225,
+        "1": 54,
+        "2": 24,
+        "3": 24,
+        "4": 31,
+        "5": 30,
+        "6": 26,
+        "7": 47,
+        "8": 39
+      },
+      "samples_passing_shown_test": 1539,
+      "shown_pass_hidden_fail": 294,
+      "hidden_fail_share_of_shown_pass": 0.19103313840155944,
+      "status_share": {
+        "pass": 0.31125,
+        "no_code": 0.0,
+        "syntax": 0.00775,
+        "runtime": 0.1295,
+        "wrong_answer": 0.548,
+        "timeout": 0.0035
+      }
+    }
+  },
+  "training_sets": {
+    "B_round1": {
+      "source": "A/train/sample8",
+      "filter": "pass",
+      "max_per_problem": 4,
+      "n_examples": 521,
+      "n_problems": 314,
+      "problems_with_examples": 179,
+      "problems_without_examples": 135,
+      "examples_per_problem": {
+        "1": 41,
+        "2": 24,
+        "3": 24,
+        "4": 90
+      },
+      "status_counts": {
+        "pass": 521
+      },
+      "share_not_passing": 0.0,
+      "distinct_before_cap_per_problem": {
+        "0": 135,
+        "1": 41,
+        "2": 24,
+        "3": 24,
+        "4": 22,
+        "5": 27,
+        "6": 21,
+        "7": 10,
+        "8": 10
+      },
+      "distinct_before_cap_total": 660
+    },
+    "C_round1": {
+      "source": "A/train/sample8",
+      "filter": "none",
+      "max_per_problem": 4,
+      "n_examples": 1247,
+      "n_problems": 314,
+      "problems_with_examples": 314,
+      "problems_without_examples": 0,
+      "examples_per_problem": {
+        "2": 3,
+        "3": 3,
+        "4": 308
+      },
+      "status_counts": {
+        "wrong_answer": 666,
+        "pass": 386,
+        "runtime": 180,
+        "syntax": 11,
+        "timeout": 4
+      },
+      "share_not_passing": 0.6904570970328789,
+      "distinct_before_cap_per_problem": {
+        "2": 3,
+        "3": 3,
+        "4": 13,
+        "5": 12,
+        "6": 26,
+        "7": 48,
+        "8": 209
+      },
+      "distinct_before_cap_total": 2291
+    },
+    "D": {
+      "source": "reference",
+      "n_examples": 314,
+      "n_problems": 314,
+      "problems_with_examples": 314,
+      "problems_without_examples": 0,
+      "examples_per_problem": {
+        "1": 314
+      },
+      "status_counts": {
+        "reference": 314
+      },
+      "share_not_passing": 0.0
+    }
+  },
+  "training_cost": {
+    "D": {
+      "n_examples": 314,
+      "learning_rate": 0.0005,
+      "epochs": 2.0,
+      "train_seconds": 49.1,
+      "peak_gpu_memory_gb": 8.61,
+      "gpu": "Tesla T4",
+      "trainable_params": 8798208,
+      "trainable_share": 0.017497346861940342,
+      "first_loss": 0.7423783779144287,
+      "final_loss": 0.3919403076171875
+    }
+  }
+}
