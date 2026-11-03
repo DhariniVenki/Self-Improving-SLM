@@ -24,10 +24,11 @@ slm/generate.py        generation with vLLM (GPU) or Hugging Face
 slm/evaluate.py        generate, run, summarize, save per-problem results
 slm/selftrain.py       training sets: filter, deduplicate, cap per problem
 slm/train.py           LoRA fine-tuning from the base model, merged for vLLM
+slm/analysis.py        McNemar's test, bootstrap CIs, gain recovered, failure types
 scripts/               command-line entry points (below)
 results/               run outputs, committed for later analysis
 notebooks/             Colab notebooks: Run A; Round 0 and Run D; Round 1 (B, C)
-tests/                 unit tests for the sandbox and extraction
+tests/                 unit tests (no GPU or model needed)
 ```
 
 ## Quick start (Colab)
@@ -67,6 +68,12 @@ python scripts/build_dataset.py --run D --source reference
 # Tasks 16-19: LoRA fine-tuning, then evaluate the merged model
 python scripts/train.py --run D --model-dir /content/models
 python scripts/evaluate.py --run D --model /content/models/D/merged --splits test heldout
+
+# Tasks 26-30: McNemar's tests, bootstrap CIs, share of D's gain B recovers,
+# failure types, results table (Markdown and LaTeX) and figures.
+# Runs without results yet are skipped, so rerun it as runs finish.
+python scripts/analyze.py --split test
+python scripts/analyze.py --split heldout
 
 # Diagnostic: where the gap to the published MBPP score (52.4%) comes from
 python scripts/compare_published.py
