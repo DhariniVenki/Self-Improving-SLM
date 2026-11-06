@@ -1,0 +1,35 @@
+{
+  "run": "A",
+  "model": "Qwen/Qwen2.5-Coder-0.5B-Instruct",
+  "split": "train",
+  "split_hash": "428c40315260",
+  "prompt_version": 2,
+  "mode": "sample32",
+  "temperature": 0.8,
+  "top_p": 0.95,
+  "backend": "vllm",
+  "seconds": 173.8,
+  "n_problems": 314,
+  "samples_per_problem": 32,
+  "n_samples": 10048,
+  "pass@1": 0.3161823248407643,
+  "problems_solved_at_least_once": 213,
+  "status_counts": {
+    "pass": 3177,
+    "no_code": 0,
+    "syntax": 62,
+    "runtime": 1330,
+    "wrong_answer": 5455,
+    "timeout": 24
+  },
+  "status_share": {
+    "pass": 0.3161823248407643,
+    "no_code": 0.0,
+    "syntax": 0.006170382165605096,
+    "runtime": 0.13236464968152867,
+    "wrong_answer": 0.5428941082802548,
+    "timeout": 0.0023885350318471337
+  },
+  "shown_pass_hidden_fail": 711,
+  "pass@32": 0.678343949044586
+}

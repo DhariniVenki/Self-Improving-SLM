@@ -1,0 +1,57 @@
+{
+  "chosen": {
+    "run": "B32_weighted_lr0.0005",
+    "data_run": "B32_weighted",
+    "solved_cap": 1,
+    "learning_rate": 0.0005,
+    "heldout_pass@1": 0.5
+  },
+  "candidates": [
+    {
+      "run": "B32_lr0.0005",
+      "data_run": "B32",
+      "solved_cap": 4,
+      "learning_rate": 0.0005,
+      "heldout_pass@1": 0.4666666666666667
+    },
+    {
+      "run": "B32_lr0.0001",
+      "data_run": "B32",
+      "solved_cap": 4,
+      "learning_rate": 0.0001,
+      "heldout_pass@1": 0.4866666666666667
+    },
+    {
+      "run": "B32_weighted_lr0.0005",
+      "data_run": "B32_weighted",
+      "solved_cap": 1,
+      "learning_rate": 0.0005,
+      "heldout_pass@1": 0.5
+    },
+    {
+      "run": "B32_weighted_lr0.0001",
+      "data_run": "B32_weighted",
+      "solved_cap": 1,
+      "learning_rate": 0.0001,
+      "heldout_pass@1": 0.4666666666666667
+    },
+    {
+      "run": "B32_hard_lr0.0005",
+      "data_run": "B32_hard",
+      "solved_cap": 0,
+      "learning_rate": 0.0005,
+      "heldout_pass@1": 0.4866666666666667
+    },
+    {
+      "run": "B32_hard_lr0.0001",
+      "data_run": "B32_hard",
+      "solved_cap": 0,
+      "learning_rate": 0.0001,
+      "heldout_pass@1": 0.44
+    }
+  ],
+  "context": {
+    "A": 0.48,
+    "B_round1": 0.4533333333333333
+  }
+}

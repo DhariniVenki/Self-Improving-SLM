@@ -1,0 +1,53 @@
+{
+  "source": "A/train/sample32",
+  "filter": "pass",
+  "max_per_problem": 4,
+  "greedy_source": "A/train/greedy",
+  "solved_cap": 0,
+  "n_examples": 294,
+  "n_problems": 314,
+  "problems_with_examples": 107,
+  "problems_without_examples": 207,
+  "examples_per_problem": {
+    "1": 30,
+    "2": 18,
+    "3": 8,
+    "4": 51
+  },
+  "status_counts": {
+    "pass": 294
+  },
+  "share_not_passing": 0.0,
+  "distinct_before_cap_per_problem": {
+    "0": 101,
+    "1": 30,
+    "2": 19,
+    "3": 10,
+    "4": 11,
+    "5": 13,
+    "6": 8,
+    "7": 8,
+    "8": 13,
+    "9": 6,
+    "10": 5,
+    "11": 12,
+    "12": 12,
+    "13": 8,
+    "14": 11,
+    "15": 7,
+    "16": 9,
+    "17": 6,
+    "18": 3,
+    "19": 2,
+    "20": 2,
+    "21": 2,
+    "22": 5,
+    "23": 1,
+    "24": 2,
+    "25": 3,
+    "26": 3,
+    "27": 1,
+    "29": 1
+  },
+  "distinct_before_cap_total": 1968
+}

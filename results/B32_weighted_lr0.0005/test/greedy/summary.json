@@ -1,0 +1,34 @@
+{
+  "run": "B32_weighted_lr0.0005",
+  "model": "/content/models/B32_weighted_lr0.0005/merged",
+  "split": "test",
+  "split_hash": "79c10e1b4d61",
+  "prompt_version": 2,
+  "mode": "greedy",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "backend": "vllm",
+  "seconds": 8.8,
+  "n_problems": 500,
+  "samples_per_problem": 1,
+  "n_samples": 500,
+  "pass@1": 0.364,
+  "problems_solved_at_least_once": 182,
+  "status_counts": {
+    "pass": 182,
+    "no_code": 0,
+    "syntax": 2,
+    "runtime": 48,
+    "wrong_answer": 267,
+    "timeout": 1
+  },
+  "status_share": {
+    "pass": 0.364,
+    "no_code": 0.0,
+    "syntax": 0.004,
+    "runtime": 0.096,
+    "wrong_answer": 0.534,
+    "timeout": 0.002
+  },
+  "shown_pass_hidden_fail": 46
+}

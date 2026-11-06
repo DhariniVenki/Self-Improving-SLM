@@ -1,0 +1,34 @@
+{
+  "run": "B_round1_seed2",
+  "model": "/content/models/B_round1_seed2/merged",
+  "split": "test",
+  "split_hash": "79c10e1b4d61",
+  "prompt_version": 2,
+  "mode": "greedy",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "backend": "vllm",
+  "seconds": 8.8,
+  "n_problems": 500,
+  "samples_per_problem": 1,
+  "n_samples": 500,
+  "pass@1": 0.342,
+  "problems_solved_at_least_once": 171,
+  "status_counts": {
+    "pass": 171,
+    "no_code": 0,
+    "syntax": 3,
+    "runtime": 47,
+    "wrong_answer": 279,
+    "timeout": 0
+  },
+  "status_share": {
+    "pass": 0.342,
+    "no_code": 0.0,
+    "syntax": 0.006,
+    "runtime": 0.094,
+    "wrong_answer": 0.558,
+    "timeout": 0.0
+  },
+  "shown_pass_hidden_fail": 41
+}

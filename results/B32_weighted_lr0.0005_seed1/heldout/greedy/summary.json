@@ -1,0 +1,34 @@
+{
+  "run": "B32_weighted_lr0.0005_seed1",
+  "model": "/content/models/B32_weighted_lr0.0005_seed1/merged",
+  "split": "heldout",
+  "split_hash": "c49c4968a8cf",
+  "prompt_version": 2,
+  "mode": "greedy",
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "backend": "vllm",
+  "seconds": 2.2,
+  "n_problems": 150,
+  "samples_per_problem": 1,
+  "n_samples": 150,
+  "pass@1": 0.48,
+  "problems_solved_at_least_once": 72,
+  "status_counts": {
+    "pass": 72,
+    "no_code": 0,
+    "syntax": 0,
+    "runtime": 11,
+    "wrong_answer": 67,
+    "timeout": 0
+  },
+  "status_share": {
+    "pass": 0.48,
+    "no_code": 0.0,
+    "syntax": 0.0,
+    "runtime": 0.07333333333333333,
+    "wrong_answer": 0.44666666666666666,
+    "timeout": 0.0
+  },
+  "shown_pass_hidden_fail": 10
+}

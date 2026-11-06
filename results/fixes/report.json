@@ -1,0 +1,304 @@
+{
+  "chosen": "B32_weighted_lr0.0005",
+  "groups": {
+    "A": [
+      "A",
+      "A_repeat1",
+      "A_repeat2"
+    ],
+    "B_round1": [
+      "B_round1",
+      "B_round1_seed1",
+      "B_round1_seed2"
+    ],
+    "B32_weighted_lr0.0005": [
+      "B32_weighted_lr0.0005",
+      "B32_weighted_lr0.0005_seed1",
+      "B32_weighted_lr0.0005_seed2"
+    ]
+  },
+  "splits": {
+    "test": {
+      "scores": {
+        "A": [
+          0.336,
+          0.33,
+          0.328
+        ],
+        "B_round1": [
+          0.352,
+          0.34,
+          0.342
+        ],
+        "B32_weighted_lr0.0005": [
+          0.364,
+          0.352,
+          0.368
+        ]
+      },
+      "comparisons": [
+        {
+          "first": "A",
+          "second": "B32_weighted_lr0.0005",
+          "n_problems": 500,
+          "difference": 0.029999999999999995,
+          "ci95": [
+            0.003999999999999995,
+            0.055999999999999994
+          ],
+          "n_boot": 10000,
+          "mcnemar_by_repeat": [
+            {
+              "n_problems": 500,
+              "both_pass": 141,
+              "neither_pass": 291,
+              "only_first": 27,
+              "only_second": 41,
+              "p_value": 0.11425430684992328,
+              "p_value_holm": 0.9140344547993863
+            },
+            {
+              "n_problems": 500,
+              "both_pass": 141,
+              "neither_pass": 300,
+              "only_first": 24,
+              "only_second": 35,
+              "p_value": 0.19252645776146274,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 500,
+              "both_pass": 138,
+              "neither_pass": 290,
+              "only_first": 26,
+              "only_second": 46,
+              "p_value": 0.024460907328324375,
+              "p_value_holm": 0.22014816595491937
+            }
+          ]
+        },
+        {
+          "first": "B_round1",
+          "second": "B32_weighted_lr0.0005",
+          "n_problems": 500,
+          "difference": 0.016666666666666666,
+          "ci95": [
+            -0.006,
+            0.03866666666666666
+          ],
+          "n_boot": 10000,
+          "mcnemar_by_repeat": [
+            {
+              "n_problems": 500,
+              "both_pass": 148,
+              "neither_pass": 290,
+              "only_first": 28,
+              "only_second": 34,
+              "p_value": 0.5257733601756501,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 500,
+              "both_pass": 137,
+              "neither_pass": 291,
+              "only_first": 33,
+              "only_second": 39,
+              "p_value": 0.5559977177609708,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 500,
+              "both_pass": 146,
+              "neither_pass": 291,
+              "only_first": 25,
+              "only_second": 38,
+              "p_value": 0.1299179230225525,
+              "p_value_holm": 0.9140344547993863
+            }
+          ]
+        },
+        {
+          "first": "A",
+          "second": "B_round1",
+          "n_problems": 500,
+          "difference": 0.013333333333333329,
+          "ci95": [
+            -0.01266666666666667,
+            0.039999999999999994
+          ],
+          "n_boot": 10000,
+          "mcnemar_by_repeat": [
+            {
+              "n_problems": 500,
+              "both_pass": 141,
+              "neither_pass": 297,
+              "only_first": 27,
+              "only_second": 35,
+              "p_value": 0.3741517124047949,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 500,
+              "both_pass": 136,
+              "neither_pass": 301,
+              "only_first": 29,
+              "only_second": 34,
+              "p_value": 0.6146550157654618,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 500,
+              "both_pass": 136,
+              "neither_pass": 301,
+              "only_first": 28,
+              "only_second": 35,
+              "p_value": 0.4499625362902225,
+              "p_value_holm": 1.0
+            }
+          ]
+        }
+      ]
+    },
+    "heldout": {
+      "scores": {
+        "A": [
+          0.48,
+          0.47333333333333333,
+          0.48
+        ],
+        "B_round1": [
+          0.4533333333333333,
+          0.44666666666666666,
+          0.4866666666666667
+        ],
+        "B32_weighted_lr0.0005": [
+          0.5,
+          0.48,
+          0.4666666666666667
+        ]
+      },
+      "comparisons": [
+        {
+          "first": "A",
+          "second": "B32_weighted_lr0.0005",
+          "n_problems": 150,
+          "difference": 0.004444444444444439,
+          "ci95": [
+            -0.04222222222222223,
+            0.05333333333333333
+          ],
+          "n_boot": 10000,
+          "mcnemar_by_repeat": [
+            {
+              "n_problems": 150,
+              "both_pass": 64,
+              "neither_pass": 67,
+              "only_first": 8,
+              "only_second": 11,
+              "p_value": 0.6476058959960938,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 150,
+              "both_pass": 62,
+              "neither_pass": 69,
+              "only_first": 9,
+              "only_second": 10,
+              "p_value": 1.0,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 150,
+              "both_pass": 63,
+              "neither_pass": 71,
+              "only_first": 9,
+              "only_second": 7,
+              "p_value": 0.803619384765625,
+              "p_value_holm": 1.0
+            }
+          ]
+        },
+        {
+          "first": "B_round1",
+          "second": "B32_weighted_lr0.0005",
+          "n_problems": 150,
+          "difference": 0.02,
+          "ci95": [
+            -0.02,
+            0.06
+          ],
+          "n_boot": 10000,
+          "mcnemar_by_repeat": [
+            {
+              "n_problems": 150,
+              "both_pass": 63,
+              "neither_pass": 70,
+              "only_first": 5,
+              "only_second": 12,
+              "p_value": 0.143463134765625,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 150,
+              "both_pass": 59,
+              "neither_pass": 70,
+              "only_first": 8,
+              "only_second": 13,
+              "p_value": 0.38331031799316406,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 150,
+              "both_pass": 65,
+              "neither_pass": 72,
+              "only_first": 8,
+              "only_second": 5,
+              "p_value": 0.5810546875,
+              "p_value_holm": 1.0
+            }
+          ]
+        },
+        {
+          "first": "A",
+          "second": "B_round1",
+          "n_problems": 150,
+          "difference": -0.01555555555555556,
+          "ci95": [
+            -0.06000000000000001,
+            0.02888888888888888
+          ],
+          "n_boot": 10000,
+          "mcnemar_by_repeat": [
+            {
+              "n_problems": 150,
+              "both_pass": 62,
+              "neither_pass": 72,
+              "only_first": 10,
+              "only_second": 6,
+              "p_value": 0.454498291015625,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 150,
+              "both_pass": 61,
+              "neither_pass": 73,
+              "only_first": 10,
+              "only_second": 6,
+              "p_value": 0.454498291015625,
+              "p_value_holm": 1.0
+            },
+            {
+              "n_problems": 150,
+              "both_pass": 64,
+              "neither_pass": 69,
+              "only_first": 8,
+              "only_second": 9,
+              "p_value": 1.0,
+              "p_value_holm": 1.0
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
